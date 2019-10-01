@@ -42,4 +42,4 @@ if __name__ == "__main__":
 
 
 r = requests.get('https://my-json-server.typicode.com/AcckiyGerman/demo/messages/1').json()
-print(r['title'])
+print(r['message'])
