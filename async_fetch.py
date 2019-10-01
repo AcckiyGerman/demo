@@ -35,7 +35,7 @@ def map_tree(node):
 
 async def main():
     async with aiohttp.ClientSession() as session:
-        initiate_tasks(tree, session)
+        initiate_tasks(node=tree, session=session)
         await asyncio.gather(*tasks)
         message_tree = map_tree(tree)
         print(message_tree)
