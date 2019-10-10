@@ -48,13 +48,7 @@ async def get_comments_tree(client: ClientSession, tree: Tree[int]):
 
 async def main():
     async with ClientSession() as client:
-        tree = Tree(1, children=[
-            Tree(2),
-            Tree(3, children=[
-                Tree(4),
-                Tree(5)
-            ])
-        ])
+        tree = Tree(1, children=[Tree(2), Tree(3, children=[Tree(4), Tree(5)])])
         tree.print()
 
         comment_tree = await get_comments_tree(client, tree)
