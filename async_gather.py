@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import aiohttp
 import asyncio
 
@@ -7,7 +7,7 @@ import asyncio
 @dataclass
 class IdNode:
     id: int
-    children: list = field(default_factory=list)
+    children: list
 
 
 @dataclass
@@ -16,16 +16,16 @@ class MsgNode:
     children: list
 
     def __str__(self, indentation=""):
-        message = f"{indentation}{self.message}"
-        children_messages = [child.__str__(indentation + '\t') for child in self.children]
-        return '\n'.join([message, *children_messages])
+        return '\n'.join(
+            [indentation + self.message] + [child.__str__(indentation + '\t') for child in self.children]
+        )
 
 
 async def get_comment_by_id(x, session):
-    r = await session.get(f"https://jsonplaceholder.typicode.com/todos/{x}")
-    data = await r.json()
-    print('request', x, 'finished')
-    return data['title']
+    async with session.get(f"https://jsonplaceholder.typicode.com/todos/{x}") as res:
+        data = await res.json()
+        print('request', x, 'finished')
+        return data['title']
 
 
 async def map_tree(node, session):
@@ -36,13 +36,11 @@ async def map_tree(node, session):
     return MsgNode(message, children)
 
 
-async def main():
+async def main(tree):
     async with aiohttp.ClientSession() as session:
-        message_tree = await map_tree(
-            node=IdNode(1, [IdNode(2), IdNode(3, [IdNode(4), IdNode(5)])]),
-            session=session
-        )
+        message_tree = await map_tree(tree, session)
         print('\n', message_tree)
 
 
-asyncio.run(main())
+tree = IdNode(1, [IdNode(2, []), IdNode(3, [IdNode(4, []), IdNode(5, [])])])
+asyncio.run(main(tree))
