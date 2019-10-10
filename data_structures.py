@@ -20,5 +20,3 @@ tree = IdNode(1, [
         IdNode(5, [])
     ])
 ])
-
-print(tree)

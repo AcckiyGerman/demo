@@ -14,7 +14,7 @@ async def get_comment_by_id(x, session):
     r = await session.get(url)
     data = await r.json()
     messages[x] = data['message']
-    print(f"request {x} finished")
+    print(f"request {x} finished: {data['message']}")
 
 
 def initiate_tasks(node, session):
@@ -38,7 +38,6 @@ async def main():
         initiate_tasks(node=tree, session=session)
         await asyncio.gather(*tasks)
         message_tree = map_tree(tree)
-        print(message_tree)
 
 if __name__ == "__main__":
     asyncio.run(main())

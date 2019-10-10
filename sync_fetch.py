@@ -8,6 +8,7 @@ api_url = "https://my-json-server.typicode.com/AcckiyGerman/demo/messages/"
 def get_comment_by_id(x):
     url = api_url + str(x)
     r = requests.get(url).json()
+    print(f"request {x} finished: {r['message']}")
     return r["message"]
 
 
@@ -19,4 +20,3 @@ def map_tree(node):
 
 
 message_tree = map_tree(tree)
-print(message_tree)
